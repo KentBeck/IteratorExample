@@ -75,6 +75,42 @@ class TestNode(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(iterator)
 
+    def test_append_node_to_end_of_chain(self):
+        """Test: append() should add a node to the end of the chain"""
+        # Create initial chain
+        node1 = Node(["a", "b"])
+        node2 = Node(["c"])
+        node1.next = node2
+
+        # Create node to append
+        node3 = Node(["d", "e"])
+
+        # Append node3 to the chain starting at node1
+        node1.append(node3)
+
+        # Test that the chain now includes all entries
+        entries = list(node1)
+        self.assertEqual(entries, ["a", "b", "c", "d", "e"])
+
+        # Test that node3 is properly linked at the end
+        self.assertEqual(node2.next, node3)
+        self.assertIsNone(node3.next)
+
+    def test_append_node_to_single_node(self):
+        """Test: append() should work on a single node"""
+        node1 = Node(["first"])
+        node2 = Node(["second", "third"])
+
+        node1.append(node2)
+
+        # Test the chain
+        entries = list(node1)
+        self.assertEqual(entries, ["first", "second", "third"])
+
+        # Test the linking
+        self.assertEqual(node1.next, node2)
+        self.assertIsNone(node2.next)
+
 
 if __name__ == "__main__":
     unittest.main()

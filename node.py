@@ -10,19 +10,14 @@ class NodeIterator:
         return self
 
     def __next__(self):
-        """Return the next entry in the node chain"""
         while self.current_node is not None:
             if self.current_entry_index < len(self.current_node.entries):
-                # Get the current entry and advance the index
                 entry = self.current_node.entries[self.current_entry_index]
                 self.current_entry_index += 1
                 return entry
             else:
-                # Move to the next node and reset entry index
                 self.current_node = self.current_node.next
                 self.current_entry_index = 0
-
-        # No more nodes or entries
         raise StopIteration
 
 
@@ -34,3 +29,10 @@ class Node:
     def __iter__(self):
         """Return a new NodeIterator for this node chain"""
         return NodeIterator(self)
+
+    def append(self, node):
+        """Append a node to the end of this node chain"""
+        current = self
+        while current.next is not None:
+            current = current.next
+        current.next = node
